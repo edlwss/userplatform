@@ -1,0 +1,5 @@
+rootProject.name = 'UserPlatform'
+
+include 'UserRegistryService'
+include 'ProducerService'
+include 'ConsumerService'
