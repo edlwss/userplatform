@@ -3,8 +3,9 @@ package ru.itche.userregistryservice.dto.user;
 import io.swagger.v3.oas.annotations.media.Schema;
 import  ru.itche.userregistryservice.entity.User;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
-@Schema(description = "Response with user")
 public record UserResponse(
         Long userId,
         String firstName,
@@ -22,6 +23,14 @@ public record UserResponse(
                 user.getCreatedAt().format(FORMATTER),
                 user.getUpdatedAt().format(FORMATTER)
         );
+    }
+
+    public static List<UserResponse> fromAll(List<User> users){
+        List<UserResponse> response = new ArrayList<>();
+        for (User user:users){
+            response.add(from(user));
+        }
+        return response;
     }
 
 

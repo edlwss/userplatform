@@ -3,13 +3,13 @@ package ru.itche.userregistryservice.dto.user;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
-public record CreateUserRequest(
-
-        @Schema( example = "Иван")
+public record UpdatePutUserRequest (
         @NotBlank
+        @Schema(example = "Ирина")
         String firstName,
 
-        @Schema( example = "Иванов")
         @NotBlank
+        @Schema(example = "Шейк")
         String lastName
-) {}
+){
+}
