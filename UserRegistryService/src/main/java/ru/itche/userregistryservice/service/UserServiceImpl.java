@@ -75,4 +75,11 @@ public class UserServiceImpl implements UserService {
 
         return UserResponse.from(user);
     }
+
+    @Override
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
+
 }
