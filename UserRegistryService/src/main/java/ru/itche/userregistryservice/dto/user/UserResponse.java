@@ -6,11 +6,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Schema(description = "Ответ с данными пользователя")
 public record UserResponse(
+        @Schema(description = "ID пользователя", example = "1")
         Long userId,
+        @Schema(description = "Имя пользователя", example = "Иван")
         String firstName,
+        @Schema(description = "фамилия пользователя", example = "Иванов")
         String lastName,
+        @Schema(description = "Дата создания пользователя", example = "19.03.2026 13:00:00")
         String createdAt,
+        @Schema(description = "Дата обновления пользователя", example = "19.03.2026 13:10:00")
         String updatedAt
 ) {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");

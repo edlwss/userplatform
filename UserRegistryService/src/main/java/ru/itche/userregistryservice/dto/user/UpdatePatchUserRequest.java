@@ -3,11 +3,13 @@ package ru.itche.userregistryservice.dto.user;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
+@Schema(description = "Запрос на частичное обновение данных пользователя")
 public record UpdatePatchUserRequest(
-        @Schema(example = "Петр")
+
+        @Schema(description = "Имя пользователя", example = "Иван")
         String firstName,
 
-        @Schema(example = "Новосельцев")
+        @Schema(description = "Фамилия пользователя", example = "Иванов")
         String lastName
 ) {
 }

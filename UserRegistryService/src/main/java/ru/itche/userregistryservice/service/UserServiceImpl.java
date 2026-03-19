@@ -9,6 +9,7 @@ import ru.itche.userregistryservice.dto.user.UpdatePatchUserRequest;
 import ru.itche.userregistryservice.dto.user.UpdatePutUserRequest;
 import ru.itche.userregistryservice.dto.user.UserResponse;
 import ru.itche.userregistryservice.entity.User;
+import ru.itche.userregistryservice.exception.UserNotFoundException;
 import ru.itche.userregistryservice.repository.UserRepository;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public UserResponse getUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
 
         return UserResponse.from(user);
     }
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponse updateUser(Long userId, UpdatePutUserRequest request) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User nt found"));
+                .orElseThrow(UserNotFoundException::new);
 
         user.setFirstName(request.firstName());
         user.setLastName(request.lastName());
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponse patchUser(Long userId, UpdatePatchUserRequest request) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
 
         if (request.firstName() != null && !request.firstName().isBlank()){
             user.setFirstName(request.firstName());
@@ -78,6 +79,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long userId) {
+        userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
         userRepository.deleteById(userId);
     }
 }
