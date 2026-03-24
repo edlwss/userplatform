@@ -1,9 +1,12 @@
-package ru.itche.userregistryservice.repository;
+package ru.itche.producerservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.itche.userregistryservice.entity.User;
+import ru.itche.producerservice.entity.User;
+
+import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    List<User> findByEventStatus(Integer statusCode);
 }

@@ -13,4 +13,5 @@ public record CreateUserRequest(
         @Schema(description = "Фамилия пользователя", example = "Иванов")
         @NotBlank
         String lastName
-) {}
+) {
+}

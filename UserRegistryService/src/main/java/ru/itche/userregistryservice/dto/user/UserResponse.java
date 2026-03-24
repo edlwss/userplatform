@@ -1,7 +1,8 @@
 package ru.itche.userregistryservice.dto.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import  ru.itche.userregistryservice.entity.User;
+import ru.itche.userregistryservice.entity.User;
+
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,23 +18,26 @@ public record UserResponse(
         @Schema(description = "Дата создания пользователя", example = "19.03.2026 13:00:00")
         String createdAt,
         @Schema(description = "Дата обновления пользователя", example = "19.03.2026 13:10:00")
-        String updatedAt
+        String updatedAt,
+        @Schema(description = "Статус обработки события", example = "0")
+        Integer eventStatus
 ) {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
-    public static UserResponse from(User user){
+    public static UserResponse from(User user) {
         return new UserResponse(
                 user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getCreatedAt().format(FORMATTER),
-                user.getUpdatedAt().format(FORMATTER)
+                user.getUpdatedAt().format(FORMATTER),
+                user.getEventStatus()
         );
     }
 
-    public static List<UserResponse> fromAll(List<User> users){
+    public static List<UserResponse> fromAll(List<User> users) {
         List<UserResponse> response = new ArrayList<>();
-        for (User user:users){
+        for (User user : users) {
             response.add(from(user));
         }
         return response;

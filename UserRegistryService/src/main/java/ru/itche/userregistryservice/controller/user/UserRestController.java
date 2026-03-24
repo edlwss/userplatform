@@ -7,7 +7,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.itche.userregistryservice.dto.user.CreateUserRequest;
 import ru.itche.userregistryservice.dto.user.UpdatePatchUserRequest;
@@ -32,7 +40,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "400", description = "Пользователь не создан - некоррекный запрос"),
     })
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request,
-                                                   UriComponentsBuilder uriBuilder){
+                                                   UriComponentsBuilder uriBuilder) {
         UserResponse response = userService.createUser(request);
 
         return ResponseEntity.created(
@@ -49,7 +57,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "200", description = "Пользователь найден"),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден"),
     })
-    public ResponseEntity<UserResponse> getUser(@PathVariable Long id){
+    public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
         UserResponse response = userService.getUser(id);
 
         return ResponseEntity.ok()
@@ -59,8 +67,8 @@ public class UserRestController {
     @GetMapping
     @Operation(description = "Получение всех пользователей")
     @ApiResponse(responseCode = "200", description = "Список пользователей найден")
-    public ResponseEntity<List<UserResponse>> getUsers(){
-        List<UserResponse> responses= userService.getUsers();
+    public ResponseEntity<List<UserResponse>> getUsers() {
+        List<UserResponse> responses = userService.getUsers();
 
         return ResponseEntity.ok()
                 .body(responses);
@@ -74,7 +82,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "400", description = "Пользователь не обновлен - некоррекный запрос")
     })
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id,
-                                                     @Valid @RequestBody UpdatePutUserRequest request) {
+                                                   @Valid @RequestBody UpdatePutUserRequest request) {
         UserResponse response = userService.updateUser(id, request);
 
         return ResponseEntity.ok()
@@ -89,7 +97,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "400", description = "Пользователь не обновлен - некоррекный запрос")
     })
     public ResponseEntity<UserResponse> patchUser(@PathVariable Long id,
-                                                   @Valid @RequestBody UpdatePatchUserRequest request) {
+                                                  @Valid @RequestBody UpdatePatchUserRequest request) {
         UserResponse response = userService.patchUser(id, request);
 
         return ResponseEntity.ok()
@@ -102,7 +110,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "200", description = "Пользователь удален"),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден")
     })
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
 
         return ResponseEntity.noContent()

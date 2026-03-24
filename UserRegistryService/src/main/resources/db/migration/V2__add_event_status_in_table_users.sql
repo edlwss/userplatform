@@ -1,0 +1,2 @@
+ALTER TABLE users
+    ADD COLUMN event_status INT NOT NULL DEFAULT 0;

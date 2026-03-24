@@ -7,13 +7,13 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import ru.itche.userregistryservice.dto.user.error.ErrorResponse;
+import ru.itche.userregistryservice.dto.error.ErrorResponse;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException e){
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException e) {
         return buildResponse(
                 HttpStatus.NOT_FOUND,
                 e.getMessage());
@@ -21,20 +21,20 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class,
             MethodArgumentNotValidException.class})
-    public ResponseEntity<ErrorResponse> handleBadRequestExceptions(Exception e)  {
+    public ResponseEntity<ErrorResponse> handleBadRequestExceptions() {
         return buildResponse(
                 HttpStatus.BAD_REQUEST,
                 "Некорректный запрос");
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(Exception e) {
+    public ResponseEntity<ErrorResponse> handleException() {
         return buildResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "Внутренняя ошибка сервера");
     }
 
-    private ResponseEntity<ErrorResponse> buildResponse(HttpStatus status, String message){
+    private ResponseEntity<ErrorResponse> buildResponse(HttpStatus status, String message) {
         ErrorResponse errorResponse = new ErrorResponse(
                 status.getReasonPhrase(),
                 message

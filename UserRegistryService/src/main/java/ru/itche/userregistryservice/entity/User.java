@@ -1,7 +1,18 @@
 package ru.itche.userregistryservice.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,15 +39,20 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(name = "event_status", nullable = false)
+    private Integer eventStatus;
+
     @PrePersist
-    public void onCreate(){
+    public void onCreate() {
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
+
+        this.eventStatus = EventStatusEnum.WAIT_PROCESSING.getCode();
     }
 
     @PreUpdate
-    public void onUpdate(){
+    public void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
 }

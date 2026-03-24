@@ -1,9 +1,9 @@
-package ru.itche.userregistryservice.service;
+package ru.itche.userregistryservice.service.impl;
 
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.itche.userregistryservice.dto.user.CreateUserRequest;
 import ru.itche.userregistryservice.dto.user.UpdatePatchUserRequest;
 import ru.itche.userregistryservice.dto.user.UpdatePutUserRequest;
@@ -11,6 +11,7 @@ import ru.itche.userregistryservice.dto.user.UserResponse;
 import ru.itche.userregistryservice.entity.User;
 import ru.itche.userregistryservice.exception.UserNotFoundException;
 import ru.itche.userregistryservice.repository.UserRepository;
+import ru.itche.userregistryservice.service.UserService;
 
 import java.util.List;
 
@@ -67,10 +68,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        if (request.firstName() != null && !request.firstName().isBlank()){
+        if (request.firstName() != null && !request.firstName().isBlank()) {
             user.setFirstName(request.firstName());
         }
-        if (request.lastName() != null && !request.lastName().isBlank()){
+        if (request.lastName() != null && !request.lastName().isBlank()) {
             user.setLastName(request.lastName());
         }
 
