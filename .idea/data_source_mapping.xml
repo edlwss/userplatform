@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/UserRegistryService/src/main/resources/db/migration/V5__create_table_user_final.sql" value="5d2a291d-440e-4d7f-9ce6-ed6d92b5afad" />
+  </component>
+</project>

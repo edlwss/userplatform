@@ -9,7 +9,7 @@ import ru.itche.producerservice.dto.kafka.CreateUserEvent;
 @RequiredArgsConstructor
 public class CreateUserProducer {
 
-    private final KafkaTemplate<String, CreateUserEvent> createUserEventKafkaTemplate;
+    private final KafkaTemplate<String, Object> createUserEventKafkaTemplate;
 
     public void sendCreateUserEvent(CreateUserEvent event) {
         createUserEventKafkaTemplate.send("create-user", event);

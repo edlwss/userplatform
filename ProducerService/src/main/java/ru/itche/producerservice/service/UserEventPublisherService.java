@@ -35,6 +35,7 @@ public class UserEventPublisherService {
                     LocalDateTime.now().toString(),
                     new UserPayload(user.getFirstName(),
                             user.getLastName())));
+
             user.setEventStatus(EventStatusEnum.SENT.getCode());
         }
     }
