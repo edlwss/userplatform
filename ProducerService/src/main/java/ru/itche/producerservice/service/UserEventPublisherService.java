@@ -2,6 +2,7 @@ package ru.itche.producerservice.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import ru.itche.producerservice.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -38,20 +40,39 @@ public class UserEventPublisherService {
     }
 
     public void publicationEvent(User user) {
-        try {
-            producer.sendCreateUserEvent(
-                    new CreateUserEvent(
-                            user.getId(),
-                            LocalDateTime.now().toString(),
-                            new UserPayload(
-                                    user.getFirstName(),
-                                    user.getLastName()
-                            )
-                    )
-            );
-        } catch (Exception e) {
-            log.error("Ошибка при отправке сообщения в Kafka: ", e);
-        }
+        CreateUserEvent event = new CreateUserEvent(
+                user.getId(),
+                LocalDateTime.now().toString(),
+                new UserPayload(
+                        user.getFirstName(),
+                        user.getLastName()
+                )
+        );
+
+        CompletableFuture<SendResult<String, CreateUserEvent>> future = producer.sendCreateUserEvent(event);
+
+        future.whenComplete((result, exception) -> {
+            if (exception != null) {
+                log.error("Ошибка при отправке сообщения в Kafka: {}", exception.getMessage());
+            } else {
+                log.info("Сообщение отправлено в Kafka: {}", result.getRecordMetadata());
+            }
+        });
+
+//        try {
+//            producer.sendCreateUserEvent(
+//                    new CreateUserEvent(
+//                            user.getId(),
+//                            LocalDateTime.now().toString(),
+//                            new UserPayload(
+//                                    user.getFirstName(),
+//                                    user.getLastName()
+//                            )
+//                    )
+//            );
+//        } catch (Exception e) {
+//            log.error("Ошибка при отправке сообщения в Kafka: ", e);
+//        }
     }
 
     public void changeStatusForUsers(List<User> users) {
