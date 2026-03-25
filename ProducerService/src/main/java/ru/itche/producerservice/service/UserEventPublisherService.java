@@ -1,6 +1,7 @@
 package ru.itche.producerservice.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserEventPublisherService {
 
     private final UserRepository userRepository;
@@ -30,13 +32,25 @@ public class UserEventPublisherService {
 
         List<User> usersSent = checkUsers(users);
         for (User user : usersSent) {
-            producer.sendCreateUserEvent(new CreateUserEvent(
-                    user.getId(),
-                    LocalDateTime.now().toString(),
-                    new UserPayload(user.getFirstName(),
-                            user.getLastName())));
-
+            publicationEvent(user);
             user.setEventStatus(EventStatusEnum.SENT.getCode());
+        }
+    }
+
+    public void publicationEvent(User user) {
+        try {
+            producer.sendCreateUserEvent(
+                    new CreateUserEvent(
+                            user.getId(),
+                            LocalDateTime.now().toString(),
+                            new UserPayload(
+                                    user.getFirstName(),
+                                    user.getLastName()
+                            )
+                    )
+            );
+        } catch (Exception e) {
+            log.error("Ошибка при отправке сообщения в Kafka: ", e);
         }
     }
 
